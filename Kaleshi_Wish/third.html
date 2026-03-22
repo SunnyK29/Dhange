@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Birthday Notes for My Sister ❤️</title>
+  <!-- Favicon for browser tab -->
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/jpeg" sizes="16x16" href="favicon-16x16.jpeg">
+<link rel="icon" type="image/jpeg" sizes="32x32" href="favicon-32x32.jpeg">
+
+<!-- Android Chrome icons -->
+<link rel="icon" type="image/jpeg" sizes="192x192" href="android-chrome-192x192.jpeg">
+<link rel="icon" type="image/jpeg" sizes="512x512" href="android-chrome-512x512.jpeg">
+
+<!-- Apple Touch Icon (iPhone/iPad homescreen) -->
+<link rel="apple-touch-icon" href="apple-touch-icon.jpeg">
+
+<!-- Web App Manifest -->
+<link rel="manifest" href="site.webmanifest">
+
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Zeyada&family=Titan+One&display=swap'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* ===== CSS Variables for Theme ===== */
+    :root {
+      --color-pink-bg: #feecea;
+      --color-white: #fff;
+      --color-black: #333;
+      --color-text-pink: #ff7882;
+      --color-heart: #f43d67;
+      --font-title: 'Titan One', sans-serif;
+      --font-handwriting: 'Zeyada', cursive;
+    }
+
+    /* ===== Global Styles ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent; /* Removes tap highlight on mobile */
+    }
+    
+    body {
+      height: 100vh;
+      width: 100vw;
+      background-color: var(--color-pink-bg);
+      background-image: linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, 0.8) 25%, rgba(255, 255, 255, 0.8) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.8) 75%, rgba(255, 255, 255, 0.8) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.8) 25%, rgba(255, 255, 255, 0.8) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.8) 75%, rgba(255, 255, 255, 0.8) 76%, transparent 77%, transparent);
+      background-size: 80px 80px;
+      overflow: hidden;
+      position: relative;
+      touch-action: none; /* Prevents default touch behaviors like scrolling while dragging */
+    }
+    
+    /* ===== Main Title ===== */
+    .main-title {
+        position: absolute;
+        top: 4vh;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: var(--font-title);
+        font-size: clamp(1.8rem, 5vw, 3rem);
+        color: var(--color-white);
+        text-shadow: 2px 2px 0px var(--color-text-pink), 4px 4px 0px var(--color-black);
+        z-index: 20;
+        text-align: center;
+        white-space: nowrap;
+        pointer-events: none; /* Allows clicking through title to papers */
+    }
+
+    /* ===== Animation Layers ===== */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    .floating-hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .particles i, .floating-hearts i {
+      position: absolute;
+      color: var(--color-text-pink);
+      pointer-events: none;
+    }
+
+    .floating-hearts i {
+      bottom: -80px;
+      animation: float-up linear infinite;
+      opacity: 0;
+    }
+
+    @keyframes float-up {
+      0% { 
+        transform: translateY(0); 
+        opacity: 0; 
+      }
+      10% { 
+        opacity: 0.6; 
+      }
+      90% { 
+        opacity: 0.6; 
+      }
+      100% { 
+        transform: translateY(-100vh) rotate(360deg); 
+        opacity: 0; 
+      }
+    }
+
+    /* ===== Center Heart ===== */
+    .center-heart {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 25vmax;
+      color: var(--color-heart);
+      text-shadow: 0 0 20px rgba(246, 31, 31, 0.5);
+      animation: heartbeat 1.5s infinite cubic-bezier(0.215, 0.610, 0.355, 1);
+      z-index: 2;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.05); }
+    }
+
+    /* ===== Polaroid Paper Styling - Optimized for Touch ===== */
+    .paper {
+      position: absolute;
+      background-color: var(--color-white);
+      padding: 12px;
+      width: clamp(220px, 18vw, 280px);
+      box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.2);
+      border-radius: 12px;
+      cursor: grab;
+      z-index: 5;
+      transition: box-shadow 0.2s ease;
+      touch-action: none; /* Improves touch dragging */
+      user-select: none; /* Prevents text selection while dragging */
+      -webkit-user-select: none;
+    }
+
+    .paper:active { 
+      cursor: grabbing; 
+    }
+    
+    .paper .image-container {
+      width: 100%;
+      height: 180px;
+      background-color: #f5f5f5;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+    }
+
+    /* For images inside papers */
+    .paper .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* For videos inside papers */
+    .paper .image-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      user-select: none;
+      pointer-events: none;
+    }
+    
+    .paper p {
+      font-family: var(--font-handwriting);
+      font-size: clamp(20px, 2vw, 32px);
+      color: var(--color-black);
+      padding: 10px 5px 5px 5px;
+      text-align: center;
+      line-height: 1.2;
+      margin-top: 5px;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* ===== Hover Heart Effect (works on touch as well) ===== */
+    .hover-heart {
+      position: fixed;
+      font-size: 20px;
+      color: var(--color-heart);
+      pointer-events: none;
+      animation: float-away 1s ease-out forwards;
+      z-index: 999;
+      filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
+    }
+    @keyframes float-away {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% { 
+        transform: translateY(-60px) scale(1.2); 
+        opacity: 0; 
+      }
+    }
+
+    /* ===== Next Button Styling - Mobile Friendly ===== */
+    .next-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--color-text-pink);
+      color: var(--color-white);
+      border: none;
+      padding: 12px 20px;
+      font-family: var(--font-title);
+      font-size: 1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      z-index: 1000;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .next-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Responsive adjustments for mobile */
+    @media screen and (max-width: 768px) {
+      .paper {
+        padding: 10px;
+        width: 220px;
+      }
+      .paper .image-container {
+        height: 160px;
+      }
+      .paper p {
+        font-size: 20px;
+        padding: 8px 5px 3px 5px;
+      }
+      .next-btn {
+        bottom: 15px;
+        right: 15px;
+        padding: 10px 18px;
+        font-size: 0.9rem;
+      }
+      .main-title {
+        font-size: 1.5rem;
+        white-space: nowrap;
+        top: 2vh;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .paper {
+        width: 200px;
+      }
+      .paper .image-container {
+        height: 140px;
+      }
+      .paper p {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="main-title">A Few Notes For You ❤️</h1>
+  
+  <div class="particles"></div>
+  <div class="floating-hearts"></div>
+  <div class="center-heart">
+    <i class="fa-solid fa-heart"></i>
+  </div>
+  
+  <button class="next-btn" onclick="window.location.href='book.html'">Next →</button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <script>
+    // --- Notes Data: First note uses a video (1.mp4) ---
+    const notesData = [
+      { 
+        type: "video", 
+        src: "1.mp4", 
+        text: "You may not know this, but even if my day goes completely Right, just one small conversation with you makes it feel KUCH BHI😵." 
+      },
+      { type: "image", src: "8.jpeg", text: "And once again... Happy Birthday, yaar! Enjoy every moment of your day." },
+      { type: "image", src: "7.jpeg", text: "Honestly, I really wish You were tension free on this birthday. But it's okay — keep going, you’ll clear everything easily. I believe in you." },
+      { type: "image", src: "5.jpeg", text: "Your presence has this quiet magic — it makes everything feel Even Worse Now🤣🤣." },
+      { type: "image", src: "4.jpeg", text: "You’re truly one most Ridiculous girl I’ve ever come across." },
+      { type: "image", src: "3.jpeg", text: "Just remember — you’ll always be my favourite Listener." },
+      { type: "image", src: "2.jpeg", text: "You have such a devilish but kind soul — inside and out." },
+      { type: "image", src: "6.jpeg", text: "You're the most Kanjoos woman I've ever seen." }
+    ];
+
+    // --- Paper Dragging Logic - Optimized for Touch ---
+    class Paper {
+      constructor(paperElement) {
+        this.paper = paperElement;
+        this.isDragging = false;
+        this.startX = 0;
+        this.startY = 0;
+        this.initialLeft = 0;
+        this.initialTop = 0;
+        this.hoverInterval = null;
+        this.init();
+      }
+
+      init() {
+        // Mouse events
+        this.paper.addEventListener('mousedown', (e) => {
+          e.preventDefault();
+          this.startDrag(e.clientX, e.clientY);
+        });
+        
+        // Touch events for mobile
+        this.paper.addEventListener('touchstart', (e) => {
+          e.preventDefault();
+          const touch = e.touches[0];
+          this.startDrag(touch.clientX, touch.clientY);
+        }, { passive: false });
+        
+        // Global move and end events
+        window.addEventListener('mousemove', (e) => this.onDrag(e.clientX, e.clientY));
+        window.addEventListener('mouseup', () => this.endDrag());
+        
+        window.addEventListener('touchmove', (e) => {
+          if (!this.isDragging) return;
+          e.preventDefault();
+          const touch = e.touches[0];
+          this.onDrag(touch.clientX, touch.clientY);
+        }, { passive: false });
+        
+        window.addEventListener('touchend', () => this.endDrag());
+        window.addEventListener('touchcancel', () => this.endDrag());
+
+        // Hover/heart effect for both mouse and touch
+        this.paper.addEventListener('mouseenter', () => this.startHeartEffect());
+        this.paper.addEventListener('mouseleave', () => this.stopHeartEffect());
+        
+        // For touch devices, show hearts on tap/hold
+        this.paper.addEventListener('touchstart', () => {
+          this.startHeartEffect();
+          setTimeout(() => this.stopHeartEffect(), 300);
+        });
+      }
+
+      startDrag(clientX, clientY) {
+        if (this.isDragging) return;
+        this.isDragging = true;
+        
+        // Bring to front
+        this.paper.style.zIndex = highestZ++;
+        this.paper.style.cursor = 'grabbing';
+        
+        // Get current position
+        const rect = this.paper.getBoundingClientRect();
+        this.startX = clientX - rect.left;
+        this.startY = clientY - rect.top;
+        this.initialLeft = rect.left;
+        this.initialTop = rect.top;
+      }
+
+      onDrag(clientX, clientY) {
+        if (!this.isDragging) return;
+        
+        let newLeft = clientX - this.startX;
+        let newTop = clientY - this.startY;
+        
+        // Optional: Add boundary constraints to keep papers within view
+        const maxX = window.innerWidth - this.paper.offsetWidth;
+        const maxY = window.innerHeight - this.paper.offsetHeight;
+        
+        newLeft = Math.max(5, Math.min(newLeft, maxX - 5));
+        newTop = Math.max(40, Math.min(newTop, maxY - 40));
+        
+        this.paper.style.left = `${newLeft}px`;
+        this.paper.style.top = `${newTop}px`;
+      }
+
+      endDrag() {
+        if (!this.isDragging) return;
+        this.isDragging = false;
+        this.paper.style.cursor = 'grab';
+      }
+      
+      startHeartEffect() {
+        this.stopHeartEffect();
+        this.hoverInterval = setInterval(() => {
+          const heart = document.createElement('i');
+          heart.className = 'fa-solid fa-heart hover-heart';
+          const rect = this.paper.getBoundingClientRect();
+          heart.style.left = `${rect.left + Math.random() * rect.width}px`;
+          heart.style.top = `${rect.top - 15}px`;
+          document.body.appendChild(heart);
+          setTimeout(() => heart.remove(), 1000);
+        }, 250);
+      }
+      
+      stopHeartEffect() { 
+        clearInterval(this.hoverInterval); 
+      }
+    }
+
+    let highestZ = 10;
+
+    // Helper function to create media element based on type
+    function createMediaElement(item) {
+      const container = document.createElement('div');
+      container.className = 'image-container';
+      
+      if (item.type === 'video') {
+        const video = document.createElement('video');
+        video.src = item.src;
+        video.autoplay = true;
+        video.loop = true;
+        video.muted = true;
+        video.playsInline = true;
+        video.setAttribute('playsinline', '');
+        video.style.width = '100%';
+        video.style.height = '100%';
+        video.style.objectFit = 'cover';
+        
+        // Ensure video starts playing
+        const playVideo = () => {
+          video.play().catch(e => console.log('Video autoplay blocked:', e));
+        };
+        video.addEventListener('canplaythrough', playVideo);
+        video.addEventListener('loadeddata', playVideo);
+        
+        container.appendChild(video);
+      } else {
+        const img = document.createElement('img');
+        img.src = item.src;
+        img.alt = "A special memory";
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        container.appendChild(img);
+      }
+      
+      return container;
+    }
+
+    // --- Generate Papers from Data with proper positioning for mobile ---
+    function generatePapers() {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      
+      notesData.forEach((note, index) => {
+        const paperDiv = document.createElement('div');
+        paperDiv.className = 'paper';
+        paperDiv.style.cursor = 'grab';
+        
+        // Create media container
+        const mediaContainer = createMediaElement(note);
+        
+        // Create text paragraph
+        const textPara = document.createElement('p');
+        textPara.textContent = note.text;
+        
+        paperDiv.appendChild(mediaContainer);
+        paperDiv.appendChild(textPara);
+        
+        document.body.appendChild(paperDiv);
+        
+        // Random initial position - spread across viewport (optimized for mobile)
+        const paperWidth = paperDiv.offsetWidth || 240;
+        const paperHeight = paperDiv.offsetHeight || 280;
+        
+        // Ensure papers are within visible area
+        const maxX = Math.max(vw - paperWidth - 20, 20);
+        const maxY = Math.max(vh - paperHeight - 80, 80);
+        
+        const randomX = 20 + Math.random() * (maxX - 20);
+        const randomY = 100 + Math.random() * (maxY - 100);
+        const randomRotate = Math.random() * 40 - 20;
+        
+        paperDiv.style.position = 'absolute';
+        paperDiv.style.left = `${randomX}px`;
+        paperDiv.style.top = `${randomY}px`;
+        paperDiv.style.transform = `rotateZ(${randomRotate}deg)`;
+        
+        new Paper(paperDiv);
+      });
+    }
+
+    // --- Generate Background Animations ---
+    function createParticleHearts(container, count) {
+      if (!container) return;
+      for (let i = 0; i < count; i++) {
+        const heart = document.createElement('i');
+        heart.className = 'fa-solid fa-heart';
+        heart.style.position = 'absolute';
+        heart.style.left = `${Math.random() * 100}%`;
+        heart.style.top = `${Math.random() * 100}%`;
+        heart.style.fontSize = `${8 + Math.random() * 15}px`;
+        heart.style.opacity = '0.2';
+        heart.style.color = '#ff7882';
+        heart.style.transform = `rotate(${Math.random() * 360}deg)`;
+        heart.style.pointerEvents = 'none';
+        container.appendChild(heart);
+      }
+    }
+    
+    function createFloatingHeartsEffect(container, count) {
+      if (!container) return;
+      for (let i = 0; i < count; i++) {
+        const heart = document.createElement('i');
+        heart.className = 'fa-solid fa-heart';
+        heart.style.position = 'absolute';
+        heart.style.left = `${Math.random() * 100}%`;
+        heart.style.bottom = '-50px';
+        heart.style.fontSize = `${12 + Math.random() * 22}px`;
+        heart.style.color = '#ff7882';
+        heart.style.opacity = '0.5';
+        heart.style.animation = `float-up ${10 + Math.random() * 12}s linear infinite`;
+        heart.style.animationDelay = `${Math.random() * 8}s`;
+        heart.style.pointerEvents = 'none';
+        container.appendChild(heart);
+      }
+    }
+
+    // Initialize everything
+    document.addEventListener('DOMContentLoaded', () => {
+      // Get containers
+      const particlesContainer = document.querySelector('.particles');
+      const floatingContainer = document.querySelector('.floating-hearts');
+      
+      // Clear any existing content
+      if (particlesContainer) particlesContainer.innerHTML = '';
+      if (floatingContainer) floatingContainer.innerHTML = '';
+      
+      // Create background hearts
+      createParticleHearts(particlesContainer, 50);
+      createFloatingHeartsEffect(floatingContainer, 20);
+      
+      // Generate draggable papers
+      generatePapers();
+      
+      // Ensure videos play on mobile
+      setTimeout(() => {
+        const allVideos = document.querySelectorAll('video');
+        allVideos.forEach(video => {
+          video.play().catch(e => console.log('Video autoplay blocked'));
+        });
+      }, 500);
+    });
+    
+    // Play videos on first user interaction (helps with autoplay policies on mobile)
+    function enableVideosOnInteraction() {
+      const allVideos = document.querySelectorAll('video');
+      allVideos.forEach(video => {
+        if (video.paused && video.src && video.readyState >= 2) {
+          video.play().catch(e => console.log('Playback failed'));
+        }
+      });
+    }
+    
+    document.addEventListener('click', enableVideosOnInteraction, { once: true });
+    document.addEventListener('touchstart', enableVideosOnInteraction, { once: true });
+    
+    // Handle window resize to reposition off-screen papers
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const papers = document.querySelectorAll('.paper');
+        papers.forEach(paper => {
+          const rect = paper.getBoundingClientRect();
+          const paperWidth = paper.offsetWidth;
+          const paperHeight = paper.offsetHeight;
+          
+          if (rect.right > vw - 10) {
+            paper.style.left = `${vw - paperWidth - 10}px`;
+          }
+          if (rect.left < 5) {
+            paper.style.left = '10px';
+          }
+          if (rect.bottom > vh - 20) {
+            paper.style.top = `${vh - paperHeight - 20}px`;
+          }
+          if (rect.top < 50) {
+            paper.style.top = '60px';
+          }
+        });
+      }, 200);
+    });
+  </script>
+</body>
+</html>
